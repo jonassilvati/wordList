@@ -1,20 +1,76 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Button, FlatList, SafeAreaView, Alert, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function App() {
+
+  const [ words, setWords ] = useState([]);
+  const [ cWord, setCWord ] = useState('');
+  
+  const addWord = () => {
+    setWords([...words, cWord]);
+    setCWord('');
+    Alert.alert(
+      'Sucesso',
+      'Palavra adicionada com sucesso',
+      [
+        {
+          text: 'OK',
+          onPress: () => console.log('OK Pressed')
+        }
+      ]
+    );
+  }
+
+  
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container}>
+        <Text>App do jonas</Text>
+        <TextInput
+            value={cWord}
+            style={styles.textInput}
+            onChangeText={ setCWord }
+            placeholder='Nova palavra'          
+          />
+        <Button
+
+          title='salvar palavra'
+          onPress={addWord}
+        />
+        <FlatList
+          style={styles.wordsList}
+          data={words}
+          keyExtractor={(item, idx) => idx.toString()}
+          renderItem={({item}) => <Text>{item}</Text>}
+          />
+        <StatusBar style="auto" />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: { 
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    paddingTop: 40,
+    paddingBottom: 40,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
+  textInput: {
+    borderWidth: 1,
+    borderColor: '#980000',
+    padding: 10,
+    marginBottom: 20,
+    marginTop: 10,
+    borderRadius: 10,
+    backgroundColor: '#f0f0f0'
+    
+  },
+  wordsList:{
+    marginTop: 20,
+  }
+
 });
+
